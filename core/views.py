@@ -4,12 +4,13 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated 
 from django_filters.rest_framework import DjangoFilterBackend
+from .filters import HistoricoFilter
+
 
 from .models import Sensor, Ambiente, Historico
 from .serializers import SensorSerializer, AmbienteSerializer, HistoricoSerializer
 
 
-# 🔧 CRUD com filtros + proteção JWT
 
 class SensorViewSet(viewsets.ModelViewSet):
     queryset = Sensor.objects.all()
@@ -17,7 +18,7 @@ class SensorViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['tipo', 'status', 'id']
-
+    
 
 class AmbienteViewSet(viewsets.ModelViewSet):
     queryset = Ambiente.objects.all()
@@ -33,9 +34,9 @@ class HistoricoViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['sensor', 'timestamp']
+    filterset_class = HistoricoFilter
 
 
-# 📤 Exportar histórico em CSV
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -52,7 +53,6 @@ def exportar_historico_csv(request):
     return response
 
 
-# 📤 Exportar sensores em CSV
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -64,19 +64,12 @@ def exportar_sensores_csv(request):
     writer.writerow(['ID', 'Tipo', 'MAC Address', 'Latitude', 'Longitude', 'Status'])
 
     for s in Sensor.objects.all():
-        writer.writerow([
-            s.id,
-            s.tipo,
-            s.mac_address,
-            s.latitude,
-            s.longitude,
-            'Ativo' if s.status else 'Inativo'
+        writer.writerow([s.id, s.tipo, s.mac_address, s.latitude, s.longitude,
+        'Ativo' if s.status else 'Inativo'
         ])
 
     return response
 
-
-# 📤 Exportar ambientes em CSV
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

@@ -1,6 +1,6 @@
 from .views import (
     SensorViewSet, AmbienteViewSet, HistoricoViewSet,
-    exportar_sensores_csv, exportar_ambientes_csv, exportar_historico_csv
+    exportar_sensores_csv, exportar_ambientes_csv, exportar_historico_csv,status_geral
 )
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
@@ -22,4 +22,5 @@ urlpatterns = [
     path('exportar/sensores/', exportar_sensores_csv, name='exportar_sensores'),
     path('exportar/ambientes/', exportar_ambientes_csv, name='exportar_ambientes'),
     path('exportar/historico/', exportar_historico_csv, name='exportar_historico'),
+    path('status-geral/', status_geral, name='status-geral'),
 ]

@@ -1,15 +1,14 @@
-import csv 
+import csv
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 from django.http import HttpResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated 
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import HistoricoFilter
-
-
+from core.models import Sensor
 from .models import Sensor, Ambiente, Historico
 from .serializers import SensorSerializer, AmbienteSerializer, HistoricoSerializer
-
 
 
 class SensorViewSet(viewsets.ModelViewSet):
@@ -18,7 +17,7 @@ class SensorViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['tipo', 'status', 'id']
-    
+
 
 class AmbienteViewSet(viewsets.ModelViewSet):
     queryset = Ambiente.objects.all()
@@ -36,7 +35,24 @@ class HistoricoViewSet(viewsets.ModelViewSet):
     filterset_fields = ['sensor', 'timestamp']
     filterset_class = HistoricoFilter
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def status_geral(request):
+    sensores = Sensor.objects.all()
+    total = sensores.count()
+    ativos = sensores.filter(status=True).count()
+    inativos = total - ativos
 
+    tipos = {}
+    for tipo, _ in Sensor.TIPOS:
+        tipos[tipo] = sensores.filter(tipo=tipo).count()
+
+    return Response({
+        'total_sensores': total,
+        'ativos': ativos,
+        'inativos': inativos,
+        'tipos': tipos,
+    })
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -52,8 +68,6 @@ def exportar_historico_csv(request):
 
     return response
 
-
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def exportar_sensores_csv(request):
@@ -64,8 +78,9 @@ def exportar_sensores_csv(request):
     writer.writerow(['ID', 'Tipo', 'MAC Address', 'Latitude', 'Longitude', 'Status'])
 
     for s in Sensor.objects.all():
-        writer.writerow([s.id, s.tipo, s.mac_address, s.latitude, s.longitude,
-        'Ativo' if s.status else 'Inativo'
+        writer.writerow([
+            s.id, s.tipo, s.mac_address, s.latitude, s.longitude,
+            'Ativo' if s.status else 'Inativo'
         ])
 
     return response

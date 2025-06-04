@@ -1,8 +1,8 @@
-import csv
-from django.core.management.base import BaseCommand
 from core.models import Sensor, Ambiente, Historico
 from django.utils.timezone import make_aware
 from datetime import datetime
+from django.core.management.base import BaseCommand
+import csv
 
 class Command(BaseCommand):
     help = 'Importa dados de sensores a partir de um arquivo CSV'
@@ -14,6 +14,11 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         caminho = kwargs['arquivo']
         tipo_sensor = kwargs['tipo_sensor']
+        
+        tipos_validos = dict(Sensor.TIPOS).keys()
+        if tipo_sensor not in tipos_validos:
+            self.stderr.write(self.style.ERROR(f"Tipo de sensor inválido: '{tipo_sensor}'. Tipos válidos: {', '.join(tipos_validos)}"))
+            return
 
         try:
             with open(caminho, newline='', encoding='utf-8') as csvfile:
@@ -51,7 +56,9 @@ class Command(BaseCommand):
                         timestamp=timestamp
                     )
 
-                self.stdout.write(self.style.SUCCESS(f'Dados de {tipo_sensor} importados com sucesso!'))
+                    self.stdout.write(self.style.SUCCESS(f"✔ Dado importado: Sensor {mac}, Valor {valor}, Ambiente {ambiente_sig}"))
+
+            self.stdout.write(self.style.SUCCESS(f"\n✅ Dados de {tipo_sensor} importados com sucesso!"))
 
         except Exception as e:
-            self.stderr.write(self.style.ERROR(f'Erro ao importar: {e}'))
+            self.stderr.write(self.style.ERROR(f"Erro ao importar: {e}"))

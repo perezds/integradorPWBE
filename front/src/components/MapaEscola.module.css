@@ -1,0 +1,49 @@
+.mapaContainer {
+  position: relative;
+  background-color: #e0f2fe;
+  border-radius: 1rem;
+  padding: 1rem;
+  height: 500px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.planta {
+  background-image: url('/imgs/planta-escola.svg'); 
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.sensor {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  animation: pulse 2s infinite;
+  cursor: pointer;
+}
+
+.sensorIcon {
+  background: white;
+  border-radius: 50%;
+  padding: 0.4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.ok {
+  border: 3px solid #10b981;
+}
+.alerta {
+  border: 3px solid #f59e0b;
+}
+.critico {
+  border: 3px solid #ef4444;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1) translate(-50%, -50%); }
+  50% { transform: scale(1.1) translate(-50%, -50%); }
+}

@@ -1,0 +1,76 @@
+.menuContainer {
+  display: flex;
+  min-height: 100vh;
+}
+
+.menuContent {
+  flex: 1;
+  padding: 32px;
+  background-color: #f4f8fc;
+}
+
+.titulo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.caixas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.caixa {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  position: relative;
+}
+
+.caixa:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  background-color: #007bff;
+  color: white; 
+}
+
+.caixa h2 {
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #001f3f;
+}
+
+
+.caixa p {
+  color: #555;
+  font-size: 14px;
+  margin-top: 8px;
+
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
+  pointer-events: none;
+}
+
+.caixa:hover p {
+  opacity: 1;
+  max-height: 100px;
+  pointer-events: auto;
+  color: #ffff
+}
+
+.icone {
+  font-size: 32px;
+  color: #007bff;
+}
+.caixa:hover .icone,
+.caixa:hover h2{
+  color: #ffffff;
+}

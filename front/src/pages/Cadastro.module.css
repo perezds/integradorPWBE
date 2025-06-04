@@ -1,0 +1,95 @@
+.registerContainer {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+  }
+  
+  .registerLeft,
+  .registerRight {
+    flex: 1;
+    padding: 60px;
+  }
+  
+  .registerLeft {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .subtitle {
+    color: #444;
+    font-size: 16px;
+  }
+  
+  .inputBox {
+    margin-bottom: 20px;
+  }
+  
+  .inputBox label {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: block;
+  }
+  
+  .inputWrapper {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #d17500;
+    padding: 10px 0;
+    gap: 10px;
+    position: relative;
+  }
+  
+  .inputWrapper input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background-color: transparent;
+  }
+  
+  .icon {
+    color: #d17500;
+    font-size: 18px;
+  }
+  
+  .eye {
+    cursor: pointer;
+    font-size: 20px;
+    color: #d17500;
+    transition: transform 0.2s ease;
+  }
+  
+  .eye:hover {
+    transform: scale(1.2);
+  }
+  
+  .submitButton {
+    background-color: #d17500;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submitButton:hover {
+    background-color: #a95c00;
+  }
+  
+  .registerRight {
+    background-color: #d17500;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  

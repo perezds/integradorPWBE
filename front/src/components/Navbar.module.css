@@ -1,0 +1,33 @@
+.navbar {
+    background-color: blanchedalmond;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-bottom: 2px solid #cd853f;
+  }
+  
+  .logo {
+    font-family: 'Georgia', serif;
+    font-size: 1.8rem;
+    color: #333;
+  }
+  
+  .navLinks {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .navLinks li a {
+    font-weight: 500;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .navLinks li a:hover {
+    color: #cd853f; 
+  }
+  

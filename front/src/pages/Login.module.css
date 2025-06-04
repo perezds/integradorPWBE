@@ -1,0 +1,163 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.loginContainer {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.loginLeft,
+.loginRight {
+  flex: 1;
+  padding: 60px;
+}
+
+.loginLeft {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+h2 {
+  font-size: 32px;
+  color: #000;
+}
+
+.subtitle {
+  color: #444;
+  font-size: 16px;
+}
+
+.inputBox label {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  border: 2px solid transparent;
+  border-bottom: 2px solid #d17500;
+  padding: 10px 0;
+  gap: 10px;
+}
+
+.inputWrapper input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background-color: transparent;
+}
+
+.icon {
+  color: #d17500;
+  font-size: 18px;
+}
+
+.eye {
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.remember {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #000;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.loginBtn {
+  background-color: #d17500;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  font-weight: bold;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.registerBtn {
+  background-color: transparent;
+  color: #d17500;
+  border: 2px solid #d17500;
+  padding: 10px 24px;
+  font-weight: bold;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.loginRight {
+  background-color: #d17500;
+  align-items: center;
+  justify-content: center;
+}
+
+.rightContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.navLinks {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
+
+.navLinks a {
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navLinks a:hover {
+  color: #ffd699;
+  text-decoration: underline;
+}
+
+.loginRight img {
+  width: 60%;
+  max-width: 400px;
+}
+.signupSuggestion {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+  color: #333;
+}
+
+.signupSuggestion span {
+  margin-right: 6px;
+}
+
+.signupLink {
+  color: #d17500;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.signupLink:hover {
+  color: #a95c00;
+  text-decoration: underline;
+}

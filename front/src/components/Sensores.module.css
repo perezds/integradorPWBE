@@ -1,56 +1,118 @@
-.sensoresContainer {
-  padding: 30px;
-  color: #f2f2f2;
-}
-
-.titulo {
-  font-size: 28px;
-  margin-bottom: 20px;
-  color: #fff;
-}
-
-.grid {
+.menuContainer {
   display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+  min-height: 100vh;
 }
 
-.card {
-  background-color: #1e1e1e;
-  padding: 20px;
-  border-radius: 12px;
-  width: 250px;
-  border: 1px solid #333;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
+.menuContent {
+  flex: 1;
+  padding: 32px;
+  background-color: #f7f9fc;
 }
 
-.card:hover {
-  transform: scale(1.03);
-}
-
-.valor {
-  font-size: 22px;
-  margin-top: 10px;
-}
-
-.status {
-  margin-top: 8px;
-  display: inline-block;
-  padding: 4px 12px;
+.sensor-container {
+  background-color: #f9fbfd;
+  padding: 30px;
   border-radius: 20px;
-  font-weight: bold;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  max-width: 1000px;
+  margin: 40px auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+
+.sensor-container h2 {
+  text-align: center;
+  font-size: 28px;
+  color: #1c1c1e;
+  margin-bottom: 25px;
+}
+
+.sensor-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.sensor-form input,
+.sensor-form select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  flex: 1 1 150px;
   font-size: 14px;
+  background-color: #fff;
+  transition: border 0.3s ease;
 }
 
-.normal {
-  border-left: 5px solid #4caf50;
+.sensor-form input:focus,
+.sensor-form select:focus {
+  border-color: #4a90e2;
+  outline: none;
 }
 
-.alerta {
-  border-left: 5px solid #ff9800;
+
+.sensor-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-.crítico {
-  border-left: 5px solid #f44336;
+.sensor-form button {
+  background-color: #0066ff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.sensor-form button:hover {
+  background-color: #004ecc;
+}
+
+.sensor-form button i {
+  margin-right: 6px;
+}
+
+.sensor-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  text-align: center;
+}
+
+.sensor-table thead {
+  background-color: #eaf4ff;
+  font-weight: bold;
+  color: #0066ff;
+  border-radius: 10px;
+}
+
+.sensor-table th,
+.sensor-table td {
+  padding: 12px 15px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.06);
+}
+
+
+.sensor-actions button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 5px;
+  color: #0066ff;
+  transition: color 0.2s ease;
+}
+
+.sensor-actions button:hover {
+  color: #003d99;
 }

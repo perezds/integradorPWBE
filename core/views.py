@@ -5,10 +5,10 @@ from django.http import HttpResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
-from .filters import HistoricoFilter
-from core.models import Sensor
-from .models import Sensor, Ambiente, Historico
-from .serializers import SensorSerializer, AmbienteSerializer, HistoricoSerializer
+
+from core.models import Sensor, Ambiente, Historico
+from core.serializers import SensorSerializer, AmbienteSerializer, HistoricoSerializer
+from core.filters import HistoricoFilter
 
 
 class SensorViewSet(viewsets.ModelViewSet):
@@ -32,8 +32,8 @@ class HistoricoViewSet(viewsets.ModelViewSet):
     serializer_class = HistoricoSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['sensor', 'timestamp']
     filterset_class = HistoricoFilter
+
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -54,6 +54,7 @@ def status_geral(request):
         'tipos': tipos,
     })
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def exportar_historico_csv(request):
@@ -64,9 +65,10 @@ def exportar_historico_csv(request):
     writer.writerow(['ID', 'Sensor', 'Ambiente', 'Valor', 'Timestamp'])
 
     for h in Historico.objects.all():
-        writer.writerow([h.id, h.sensor, h.ambiente.sig, h.valor, h.timestamp])
+        writer.writerow([h.id, str(h.sensor), h.ambiente.sig, h.valor, h.timestamp])
 
     return response
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

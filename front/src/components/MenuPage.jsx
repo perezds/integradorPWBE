@@ -6,10 +6,10 @@ import { FaTachometerAlt, FaMapMarkedAlt, FaEnvelope, FaCogs, FaUserAlt, FaQuest
 export default function Menu() {
   const menuItems = [
     { title: 'Dashboard', icon: <FaTachometerAlt />, desc: 'Resumo em tempo real dos sensores.', link: '/home' },
-    { title: 'Mapas', icon: <FaMapMarkedAlt />, desc: 'Visualização dos sensores no mapa.', link: '/mapas' },
+    { title: 'Mapas', icon: <FaMapMarkedAlt />, desc: 'Visualização dos sensores no mapa.', link: '/mapa' },
     { title: 'Notificações', icon: <FaEnvelope />, desc: 'Avisos e alertas.', link: '/mensagens' },
-    { title: 'Configurações', icon: <FaCogs />, desc: 'Ajuste o sistema conforme necessário.', link: '/configuracoes' },
-    { title: 'Contas', icon: <FaUserAlt />, desc: 'Gerenciamento de usuários.', link: '/profile' },
+    { title: 'Configurações', icon: <FaCogs />, desc: 'Ajuste o sistema conforme necessário.', link: '/settings' },
+    { title: 'Contas', icon: <FaUserAlt />, desc: 'Gerenciamento de usuários.', link: '/settings/perfil' },
     { title: 'Ajuda', icon: <FaQuestionCircle />, desc: 'Central de ajuda e FAQ.', link: '/ajuda' }
   ];
 

@@ -6,12 +6,10 @@ import MapaEscola from '../components/MapaEscola';
 
 const Home = () => {
   return (
-    <div className={styles.layout}>
-      <Sidebar />
-
-      <div className={styles.contentArea}>
-        <Header />
-
+     <div className={styles.menuContainer}>
+    <Sidebar />
+    <div className={styles.menuContent}>
+      <Header />
         <main className={styles.main}>
           <div className={styles.sectionTitle}>Smart City Senai</div>
 

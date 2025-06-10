@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Ajuda.module.css';
+import Sidebar from './Sidebar';
+import Header from './HeaderHome';
 
 const faqs = [
   {
@@ -28,8 +30,12 @@ const Ajuda = () => {
   };
 
   return (
+     <div className={styles.menuContainer}>
+    <Sidebar />
+    <div className={styles.menuContent}>
+      <Header />
     <div className={styles.ajudaContainer}>
-      <h1 className={styles.titulo}>🤖 STRΛTA // Central de Ajuda</h1>
+      <h1 className={styles.titulo}>Central de Ajuda</h1>
       <p className={styles.subtitulo}>A base de conhecimento para exploradores do dashboard STRΛTA.</p>
 
       <section className={styles.secao}>
@@ -50,11 +56,13 @@ const Ajuda = () => {
       </section>
 
       <section className={styles.secaoContato}>
-        <h2>📞 Precisa de mais ajuda?</h2>
+        <h2> Precisa de mais ajuda?</h2>
         <p>Email: suporte@strata-escola.edu</p>
         <p>Ramal: 1337</p>
         <p>Chat interno: “STRΛTA Assist”</p>
       </section>
+    </div>
+    </div>
     </div>
   );
 };

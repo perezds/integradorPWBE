@@ -18,7 +18,7 @@ const Sidebar = () => {
         </ul>
         <p className={styles.section}>O U T R O S</p>
         <ul>
-          <li><a href="/config"><FaCogs /> <span>Configurações</span></a></li>
+          <li><a href="/settings"><FaCogs /> <span>Configurações</span></a></li>
           <li><a href="/ajuda"><FaQuestionCircle /> <span>Ajuda</span></a></li>
         </ul>
       </nav>

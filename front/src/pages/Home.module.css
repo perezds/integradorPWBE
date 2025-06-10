@@ -1,14 +1,12 @@
-.layout {
+.menuContainer {
   display: flex;
-  height: 100vh;
-  background-color: #f9fafb;
+  min-height: 100vh;
 }
 
-.contentArea {
+.menuContent {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
+  padding: 32px;
+  background-color: #f7f9fc;
 }
 
 .main {

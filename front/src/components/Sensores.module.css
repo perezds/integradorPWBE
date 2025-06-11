@@ -19,7 +19,6 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
-
 .sensor-container h2 {
   text-align: center;
   font-size: 28px;
@@ -51,7 +50,6 @@
   border-color: #4a90e2;
   outline: none;
 }
-
 
 .sensor-checkbox {
   display: flex;
@@ -102,7 +100,6 @@
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.06);
 }
 
-
 .sensor-actions button {
   background-color: transparent;
   border: none;
@@ -115,4 +112,74 @@
 
 .sensor-actions button:hover {
   color: #003d99;
+}
+.botaoAdicionar {
+  background-color: #0066ff;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.botaoAdicionar:hover {
+  background-color: #004ecc;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent {
+  background: #fff;
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.botoesModal {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.botoesModal button {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.botoesModal button:first-child {
+  background-color: #0066ff;
+  color: white;
+}
+
+.botoesModal button:first-child:hover {
+  background-color: #004ecc;
+}
+
+.botoesModal button:last-child {
+  background-color: #ccc;
+  color: #444;
+}
+
+.botoesModal button:last-child:hover {
+  background-color: #999;
 }

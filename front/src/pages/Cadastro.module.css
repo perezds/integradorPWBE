@@ -1,95 +1,145 @@
+/* Cadastro.module.css - novo CSS baseado na imagem 1 */
+
 .registerContainer {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-  }
-  
-  .registerLeft,
-  .registerRight {
-    flex: 1;
-    padding: 60px;
-  }
-  
-  .registerLeft {
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 20px;
-  }
-  
-  .subtitle {
-    color: #444;
-    font-size: 16px;
-  }
-  
-  .inputBox {
-    margin-bottom: 20px;
-  }
-  
-  .inputBox label {
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 6px;
-    display: block;
-  }
-  
-  .inputWrapper {
-    display: flex;
-    align-items: center;
-    border-bottom: 2px solid #d17500;
-    padding: 10px 0;
-    gap: 10px;
-    position: relative;
-  }
-  
-  .inputWrapper input {
-    flex: 1;
-    border: none;
-    outline: none;
-    font-size: 16px;
-    background-color: transparent;
-  }
-  
-  .icon {
-    color: #d17500;
-    font-size: 18px;
-  }
-  
-  .eye {
-    cursor: pointer;
-    font-size: 20px;
-    color: #d17500;
-    transition: transform 0.2s ease;
-  }
-  
-  .eye:hover {
-    transform: scale(1.2);
-  }
-  
-  .submitButton {
-    background-color: #d17500;
-    color: white;
-    border: none;
-    padding: 10px 24px;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .submitButton:hover {
-    background-color: #a95c00;
-  }
-  
-  .registerRight {
-    background-color: #d17500;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-  }
-  
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(120deg, #F0F4FF, #D9E6FF);
+  color: #1F1F1F;
+}
+
+.registerLeft {
+  flex: 1;
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: white;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
+}
+
+.registerLeft h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #003366;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.inputBox {
+  margin-bottom: 1.5rem;
+}
+
+.inputBox label {
+  font-size: 0.9rem;
+  color: #333;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  padding: 0.6rem 1rem;
+  transition: border 0.3s;
+}
+
+.inputWrapper:focus-within {
+  border-color: #3366FF;
+}
+
+.icon {
+  color: #666;
+  margin-right: 0.8rem;
+  font-size: 1.2rem;
+}
+
+.inputWrapper input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 1rem;
+  color: #333;
+}
+
+.eye {
+  cursor: pointer;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 0.9rem;
+  font-size: 1rem;
+  background-color: #3366FF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.submitButton:hover {
+  background-color: #003399;
+}
+
+.registerRight {
+  flex: 1;
+  background: linear-gradient(135deg, #003366, #3366FF);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.rightContent {
+  text-align: center;
+  max-width: 400px;
+  padding: 2rem;
+}
+
+.navLinks {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
+
+.navLinks a {
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navLinks a:hover {
+  color: #ffd699;
+  text-decoration: underline;
+}
+
+.registerRedirect {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.registerRedirect a {
+  color: #2563eb; /* azul padrão botão */
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.registerRedirect a:hover {
+  text-decoration: underline;
+}

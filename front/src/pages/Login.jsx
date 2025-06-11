@@ -13,23 +13,23 @@ export default function Login() {
   const [senha, setSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
 
-  const handleLogin = async () => {
-    try {
-      const response = await axios.post('http://localhost:8000/api/token/', {
-        email: email,
-        password: senha,
-      });
+  const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await axios.post("http://localhost:8000/token/", {
+      username,
+      password,
+    });
 
-      const token = response.data.access;
-      localStorage.setItem('token', token);
+    localStorage.setItem("access", response.data.access);
+    localStorage.setItem("refresh", response.data.refresh);
 
-      console.log('✅ Login bem-sucedido! Token salvo!');
-      navigate('/home');
-    } catch (error) {
-      console.error('❌ Erro ao fazer login:', error);
-      alert('Email ou senha inválidos. Tenta de novo, minha consagrada.');
-    }
-  };
+    alert("Login realizado com sucesso!");
+    window.location.href = "/dashboard";
+  } catch (err) {
+    alert("Usuário ou senha inválidos.");
+  }
+};
 
   const handleRegister = () => {
     navigate('/cadastro');
@@ -81,7 +81,6 @@ export default function Login() {
           <label>
             <input type="checkbox" /> Lembrar de mim.
           </label>
-          <a href="#">Esqueceu a senha?</a>
         </div>
 
         <div className={styles.buttonGroup}>

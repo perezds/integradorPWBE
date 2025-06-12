@@ -3,8 +3,15 @@ import styles from './Sensores.module.css';
 import modalStyles from './Modal.module.css';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import { FiEdit, FiTrash2 } from 'react-icons/fi'
+import Header from './HeaderHome';
+import Sidebar from './Sidebar';
 import axios from 'axios';
+
+
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5NzYwMDg4LCJpYXQiOjE3NDk3NTY0ODgsImp0aSI6ImY3MWUwODlmZWQyMjRlOWU4NDk4MDBmMmI4OGU1NDQ2IiwidXNlcl9pZCI6MX0.GLk2UGttIJfAg73Wm6AzmCB0gTRHXznWEVw8L3ejpyU'; 
+axios.defaults.baseURL = 'http://127.0.0.1:8000';
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
 const Sensores = () => {
   const [sensores, setSensores] = useState([]);
@@ -29,7 +36,7 @@ const Sensores = () => {
       setSensores(res.data);
     } catch (err) {
       console.error(err);
-      toast.error('Erro ao buscar sensores: ' + (err.response?.data?.message || err.message));
+      toast.error('Erro ao buscar sensores.');
     }
   };
 
@@ -78,16 +85,16 @@ const Sensores = () => {
     try {
       if (modoEdicao) {
         await axios.put(`/api/sensores/${sensorSelecionado.id}/`, form);
-        toast.success('Sensor atualizado com sucesso!');
+        toast.success('Sensor atualizado!');
       } else {
         await axios.post('/api/sensores/', form);
-        toast.success('Sensor adicionado com sucesso!');
+        toast.success('Sensor criado!');
       }
       buscarSensores();
       fecharModal();
     } catch (err) {
       console.error(err);
-      toast.error('Erro ao salvar sensor: ' + (err.response?.data?.message || err.message));
+      toast.error('Erro ao salvar sensor.');
     }
   };
 
@@ -95,16 +102,20 @@ const Sensores = () => {
     if (window.confirm('Tem certeza que deseja excluir este sensor?')) {
       try {
         await axios.delete(`/api/sensores/${id}/`);
-        toast.success('Sensor excluído com sucesso!');
+        toast.success('Sensor excluído!');
         buscarSensores();
       } catch (err) {
         console.error(err);
-        toast.error('Erro ao excluir sensor: ' + (err.response?.data?.message || err.message));
+        toast.error('Erro ao excluir sensor.');
       }
     }
   };
 
   return (
+    <div className={styles.menuContainer}>
+    <Sidebar />
+    <div className={styles.menuContent}>
+      <Header />
     <div className={styles.container}>
       <div className={styles.header}>
         <h1 className={styles.title}>Sensores</h1>
@@ -114,7 +125,7 @@ const Sensores = () => {
       </div>
 
       <div className={styles.gridSensores}>
-        {sensores.map(sensor => (
+        {Array.isArray(sensores) && sensores.map(sensor => (
           <div
             key={sensor.id}
             className={styles.cardSensor}
@@ -203,6 +214,8 @@ const Sensores = () => {
           </div>
         </div>
       )}
+    </div>
+    </div>
     </div>
   );
 };

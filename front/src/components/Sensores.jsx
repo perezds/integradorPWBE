@@ -1,97 +1,208 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import styles from './Sensores.module.css';
-import ModalSensores from './ModalSensores';
+import modalStyles from './Modal.module.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import axios from 'axios';
 
 const Sensores = () => {
   const [sensores, setSensores] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({
+  const [modalAberto, setModalAberto] = useState(false);
+  const [modoEdicao, setModoEdicao] = useState(false);
+  const [sensorSelecionado, setSensorSelecionado] = useState(null);
+  const [form, setForm] = useState({
     tipo: '',
     mac_address: '',
     latitude: '',
     longitude: '',
-    status: false
+    status: true,
   });
 
-  const fetchSensores = async () => {
+  useEffect(() => {
+    buscarSensores();
+  }, []);
+
+  const buscarSensores = async () => {
     try {
-      const response = await axios.get('/api/sensores/');
-      setSensores(response.data);
-    } catch (error) {
-      console.error('Erro ao buscar sensores:', error);
+      const res = await axios.get('/api/sensores/');
+      setSensores(res.data);
+    } catch (err) {
+      console.error(err);
+      toast.error('Erro ao buscar sensores: ' + (err.response?.data?.message || err.message));
     }
   };
 
-  useEffect(() => {
-    fetchSensores();
-  }, []);
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
+  const abrirModal = (sensor = null) => {
+    setModoEdicao(!!sensor);
+    setSensorSelecionado(sensor);
+    setForm(sensor || {
+      tipo: '',
+      mac_address: '',
+      latitude: '',
+      longitude: '',
+      status: true,
+    });
+    setModalAberto(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setFormData({ tipo: '', mac_address: '', latitude: '', longitude: '', status: false });
+  const fecharModal = () => {
+    setModalAberto(false);
+    setSensorSelecionado(null);
+    setModoEdicao(false);
+    setForm({
+      tipo: '',
+      mac_address: '',
+      latitude: '',
+      longitude: '',
+      status: true,
+    });
   };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+    setForm({
+      ...form,
+      [name]: type === 'checkbox' ? checked : value,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!form.tipo || !form.mac_address) {
+      toast.warn('Preencha todos os campos obrigatórios.');
+      return;
+    }
+
     try {
-      await axios.post('/api/sensores/', formData);
-      fetchSensores();
-      handleCloseModal();
-    } catch (error) {
-      console.error('Erro ao adicionar sensor:', error);
+      if (modoEdicao) {
+        await axios.put(`/api/sensores/${sensorSelecionado.id}/`, form);
+        toast.success('Sensor atualizado com sucesso!');
+      } else {
+        await axios.post('/api/sensores/', form);
+        toast.success('Sensor adicionado com sucesso!');
+      }
+      buscarSensores();
+      fecharModal();
+    } catch (err) {
+      console.error(err);
+      toast.error('Erro ao salvar sensor: ' + (err.response?.data?.message || err.message));
+    }
+  };
+
+  const excluirSensor = async (id) => {
+    if (window.confirm('Tem certeza que deseja excluir este sensor?')) {
+      try {
+        await axios.delete(`/api/sensores/${id}/`);
+        toast.success('Sensor excluído com sucesso!');
+        buscarSensores();
+      } catch (err) {
+        console.error(err);
+        toast.error('Erro ao excluir sensor: ' + (err.response?.data?.message || err.message));
+      }
     }
   };
 
   return (
-    <div className={styles.sensorContainer}>
-      <h2>Sensores</h2>
-      <button onClick={handleOpenModal} className={styles.addSensorButton}>+ Adicionar Sensor</button>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Sensores</h1>
+        <button onClick={() => abrirModal()} className={styles.btnAdd}>
+          + Adicionar Sensor
+        </button>
+      </div>
 
-      <table className={styles.sensorTable}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Tipo</th>
-            <th>MAC</th>
-            <th>Latitude</th>
-            <th>Longitude</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sensores.map((sensor) => (
-            <tr key={sensor.id}>
-              <td>{sensor.id}</td>
-              <td>{sensor.tipo}</td>
-              <td>{sensor.mac_address}</td>
-              <td>{sensor.latitude}</td>
-              <td>{sensor.longitude}</td>
-              <td>{sensor.status ? 'Ativo' : 'Inativo'}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className={styles.gridSensores}>
+        {sensores.map(sensor => (
+          <div
+            key={sensor.id}
+            className={styles.cardSensor}
+            style={{ borderColor: sensor.status ? '#16a34a' : '#dc2626' }}
+          >
+            <h2 className={styles.tipoSensor}>{sensor.tipo}</h2>
+            <p className={styles.info}><strong>MAC:</strong> {sensor.mac_address}</p>
+            <p className={styles.info}><strong>Localização:</strong> {sensor.latitude}, {sensor.longitude}</p>
+            <p className={sensor.status ? styles.statusAtivo : styles.statusInativo}>
+              <strong>Status:</strong> {sensor.status ? 'Ativo' : 'Inativo'}
+            </p>
+            <div className={styles.actions}>
+              <button onClick={() => abrirModal(sensor)} title="Editar" className={`${styles.btnIcon} ${styles.edit}`}>
+                <FiEdit size={20} />
+              </button>
+              <button onClick={() => excluirSensor(sensor.id)} title="Excluir" className={`${styles.btnIcon} ${styles.delete}`}>
+                <FiTrash2 size={20} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
 
-      <ModalSensores
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onSubmit={handleSubmit}
-        formData={formData}
-        handleChange={handleChange}
-      />
+      {modalAberto && (
+        <div className={modalStyles.overlay}>
+          <div className={modalStyles.modal}>
+            <h2>{modoEdicao ? 'Editar Sensor' : 'Novo Sensor'}</h2>
+            <form onSubmit={handleSubmit}>
+              <label>Tipo:</label>
+              <select name="tipo" value={form.tipo} onChange={handleChange} required>
+                <option value="">Selecione...</option>
+                <option value="temperatura">Temperatura</option>
+                <option value="umidade">Umidade</option>
+                <option value="luminosidade">Luminosidade</option>
+                <option value="contador">Contador de Pessoas</option>
+              </select>
+
+              <label>MAC Address:</label>
+              <input
+                type="text"
+                name="mac_address"
+                value={form.mac_address}
+                onChange={handleChange}
+                required
+              />
+
+              <label>Latitude:</label>
+              <input
+                type="number"
+                name="latitude"
+                value={form.latitude}
+                onChange={handleChange}
+                step="any"
+                required
+              />
+
+              <label>Longitude:</label>
+              <input
+                type="number"
+                name="longitude"
+                value={form.longitude}
+                onChange={handleChange}
+                step="any"
+                required
+              />
+
+              <label className={modalStyles.switchLabel}>
+                <input
+                  type="checkbox"
+                  name="status"
+                  checked={form.status}
+                  onChange={handleChange}
+                />
+                Ativo
+              </label>
+
+              <div className={modalStyles.actions}>
+                <button type="submit" className={modalStyles.salvar}>
+                  Salvar
+                </button>
+                <button type="button" onClick={fecharModal} className={modalStyles.cancelar}>
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

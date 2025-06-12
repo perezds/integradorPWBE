@@ -1,185 +1,117 @@
-.menuContainer {
-  display: flex;
+.container {
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9fafb;
   min-height: 100vh;
 }
 
-.menuContent {
-  flex: 1;
-  padding: 32px;
-  background-color: #f7f9fc;
-}
-
-.sensor-container {
-  background-color: #f9fbfd;
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  max-width: 1000px;
-  margin: 40px auto;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-.sensor-container h2 {
-  text-align: center;
-  font-size: 28px;
-  color: #1c1c1e;
-  margin-bottom: 25px;
-}
-
-.sensor-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 20px;
-  justify-content: center;
-}
-
-.sensor-form input,
-.sensor-form select {
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  flex: 1 1 150px;
-  font-size: 14px;
-  background-color: #fff;
-  transition: border 0.3s ease;
-}
-
-.sensor-form input:focus,
-.sensor-form select:focus {
-  border-color: #4a90e2;
-  outline: none;
-}
-
-.sensor-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.sensor-form button {
-  background-color: #0066ff;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  transition: background-color 0.3s ease;
-}
-
-.sensor-form button:hover {
-  background-color: #004ecc;
-}
-
-.sensor-form button i {
-  margin-right: 6px;
-}
-
-.sensor-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 10px;
-  text-align: center;
-}
-
-.sensor-table thead {
-  background-color: #eaf4ff;
-  font-weight: bold;
-  color: #0066ff;
-  border-radius: 10px;
-}
-
-.sensor-table th,
-.sensor-table td {
-  padding: 12px 15px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.06);
-}
-
-.sensor-actions button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  margin: 0 5px;
-  color: #0066ff;
-  transition: color 0.2s ease;
-}
-
-.sensor-actions button:hover {
-  color: #003d99;
-}
-.botaoAdicionar {
-  background-color: #0066ff;
-  color: white;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 12px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-bottom: 20px;
-  transition: background-color 0.3s ease;
-}
-
-.botaoAdicionar:hover {
-  background-color: #004ecc;
-}
-
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modalContent {
-  background: #fff;
-  padding: 24px;
-  border-radius: 18px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  width: 350px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.botoesModal {
+.header {
   display: flex;
   justify-content: space-between;
-  margin-top: 16px;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.botoesModal button {
-  padding: 8px 14px;
-  border-radius: 10px;
-  border: none;
+.title {
+  font-size: 1.875rem; /* 3xl */
+  font-weight: 700;
+  color: #111827;
+}
+
+.btnAdd {
+  background-color: #2563eb; /* azul */
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem; /* rounded-xl */
+  font-weight: 600;
   cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btnAdd:hover {
+  background-color: #1e40af; /* azul escuro */
+}
+
+.gridSensores {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+@media (min-width: 768px) {
+  .gridSensores {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .gridSensores {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.cardSensor {
+  background-color: white;
+  border-radius: 1.5rem; /* rounded-2xl */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-left-width: 0.25rem; /* border-l-4 */
+}
+
+.tipoSensor {
+  font-weight: 600;
+  font-size: 1.125rem; /* text-lg */
+}
+
+.info {
+  font-size: 0.9rem;
+}
+
+.statusAtivo {
+  color: #16a34a; /* verde */
   font-weight: 600;
 }
 
-.botoesModal button:first-child {
-  background-color: #0066ff;
-  color: white;
+.statusInativo {
+  color: #dc2626; /* vermelho */
+  font-weight: 600;
 }
 
-.botoesModal button:first-child:hover {
-  background-color: #004ecc;
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 0.5rem;
 }
 
-.botoesModal button:last-child {
-  background-color: #ccc;
-  color: #444;
+.btnIcon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
 }
 
-.botoesModal button:last-child:hover {
-  background-color: #999;
+.btnIcon.edit {
+  color: #3b82f6;
+}
+
+.btnIcon.edit:hover {
+  color: #1e40af;
+}
+
+.btnIcon.delete {
+  color: #ef4444;
+}
+
+.btnIcon.delete:hover {
+  color: #b91c1c;
 }

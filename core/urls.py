@@ -8,6 +8,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from .views import cadastrar_usuario
 
 
 router = DefaultRouter()
@@ -23,4 +24,5 @@ urlpatterns = [
     path('exportar/ambientes/', exportar_ambientes_csv, name='exportar_ambientes'),
     path('exportar/historico/', exportar_historico_csv, name='exportar_historico'),
     path('status-geral/', status_geral, name='status-geral'),
+    path('cadastro/', cadastrar_usuario, name='cadastro')
 ]

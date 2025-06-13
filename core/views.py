@@ -1,15 +1,17 @@
 import csv
 from django.http import HttpResponse
-from rest_framework import viewsets
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework import viewsets, status
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from django.contrib.auth.models import User
 
 from core.models import Sensor, Ambiente, Historico
 from core.serializers import SensorSerializer, AmbienteSerializer, HistoricoSerializer
 from core.filters import HistoricoFilter
 
+# --------------------- VIEWSETS --------------------- #
 
 class SensorViewSet(viewsets.ModelViewSet):
     queryset = Sensor.objects.all()
@@ -34,6 +36,8 @@ class HistoricoViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = HistoricoFilter
 
+
+# --------------------- API FUNCTIONS --------------------- #
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -101,3 +105,33 @@ def exportar_ambientes_csv(request):
         writer.writerow([a.id, a.sig, a.descricao, a.ni, a.responsavel])
 
     return response
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+@authentication_classes([]) 
+def cadastrar_usuario(request):
+    username = request.data.get('username')
+    email = request.data.get('email')
+    password = request.data.get('password')
+
+    if not username or not email or not password:
+        return Response({'erro': 'Preencha todos os campos!'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if User.objects.filter(username=username).exists():
+        return Response({'erro': 'Usuário já existe!'}, status=status.HTTP_409_CONFLICT)
+
+    if User.objects.filter(email=email).exists():
+        return Response({'erro': 'E-mail já cadastrado!'}, status=status.HTTP_409_CONFLICT)
+
+    user = User.objects.create_user(username=username, email=email, password=password)
+    user.save()
+
+    return Response(
+        {
+            'mensagem': 'Usuário cadastrado com sucesso!',
+            'username': user.username,
+            'id': user.id
+        },
+        status=status.HTTP_201_CREATED
+    )

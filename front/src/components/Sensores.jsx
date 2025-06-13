@@ -9,7 +9,7 @@ import Sidebar from './Sidebar';
 import axios from 'axios';
 
 
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5NzYwMDg4LCJpYXQiOjE3NDk3NTY0ODgsImp0aSI6ImY3MWUwODlmZWQyMjRlOWU4NDk4MDBmMmI4OGU1NDQ2IiwidXNlcl9pZCI6MX0.GLk2UGttIJfAg73Wm6AzmCB0gTRHXznWEVw8L3ejpyU'; 
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODQ2NzkxLCJpYXQiOjE3NDk4NDMxOTEsImp0aSI6IjI0M2U2N2FjOTUxMzRmMmJiMjFkNmE5NDQ1MWE3NjM3IiwidXNlcl9pZCI6M30.kn9hAHJQmfkOXkLUcTFETzTSk13y7BSa0c9AasrLfhQ'; 
 axios.defaults.baseURL = 'http://127.0.0.1:8000';
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 

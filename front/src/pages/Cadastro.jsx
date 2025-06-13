@@ -2,8 +2,8 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Cadastro.module.css';
-import { Link } from 'react-router-dom';
 import headerImage from '../../images/header_image.svg';
 
 const Cadastro = () => {
@@ -16,66 +16,68 @@ const Cadastro = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate();
 
-  const togglePassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const toggleConfirmPassword = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
+  const togglePassword = () => setShowPassword(!showPassword);
+  const toggleConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const { username, email, password, confirmPassword } = formData;
+    const { username, email, password, confirmPassword } = formData;
 
-  if (password !== confirmPassword) {
-    alert("As senhas não coincidem!");
-    return;
-  }
+    if (password !== confirmPassword) {
+      alert("As senhas não coincidem!");
+      return;
+    }
 
-  try {
-  
-    await axios.post("http://localhost:8000/cadastro/", {
-      username,
-      email,
-      password,
-    });
+    try {
+      // 1. Cadastro
+      await axios.post('http://localhost:8000/api/cadastro/', {
+        username,
+        email,
+        password,
+      });
 
-   
-    const res = await axios.post("http://localhost:8000/token/", {
-      username,
-      password,
-    });
+      // 2. Login automático
+      const res = await axios.post("http://localhost:8000/token/", {
+        username,
+        password,
+      });
 
-    localStorage.setItem("access", res.data.access);
-    localStorage.setItem("refresh", res.data.refresh);
+      localStorage.setItem("access", res.data.access);
+      localStorage.setItem("refresh", res.data.refresh);
 
-    alert("Cadastro e login feitos com sucesso!");
-    window.location.href = "/dashboard"; 
+      alert("Cadastro e login feitos com sucesso!");
+      navigate("/dashboard");
 
-  } catch (error) {
-    console.error("Erro no cadastro:", error);
-    alert("Erro ao cadastrar. Verifique os dados.");
-  }
-};
+    } catch (error) {
+      if (error.response?.status === 409) {
+        alert("Usuário ou e-mail já existe!");
+      } else {
+        console.error("Erro no cadastro:", error);
+        alert("Erro ao cadastrar. Verifique os dados e tente novamente.");
+      }
+    }
+  };
 
   return (
     <div className={styles.registerContainer}>
       <div className={styles.registerLeft}>
         <h2>Criar Conta</h2>
         <p className={styles.subtitle}>Preencha os campos abaixo para continuar.</p>
+
         <form onSubmit={handleSubmit}>
           <div className={styles.inputBox}>
             <label htmlFor="username">Usuário</label>
             <div className={styles.inputWrapper}>
               <FaUser className={styles.icon} />
               <input
+                id="username"
                 type="text"
                 name="username"
                 value={formData.username}
@@ -90,6 +92,7 @@ const Cadastro = () => {
             <div className={styles.inputWrapper}>
               <FaEnvelope className={styles.icon} />
               <input
+                id="email"
                 type="email"
                 name="email"
                 value={formData.email}
@@ -104,6 +107,7 @@ const Cadastro = () => {
             <div className={styles.inputWrapper}>
               <FaLock className={styles.icon} />
               <input
+                id="password"
                 type={showPassword ? 'text' : 'password'}
                 name="password"
                 value={formData.password}
@@ -121,6 +125,7 @@ const Cadastro = () => {
             <div className={styles.inputWrapper}>
               <FaLock className={styles.icon} />
               <input
+                id="confirmPassword"
                 type={showConfirmPassword ? 'text' : 'password'}
                 name="confirmPassword"
                 value={formData.confirmPassword}
@@ -132,12 +137,15 @@ const Cadastro = () => {
               </span>
             </div>
           </div>
-          <button type="submit" className={styles.submitButton}>Criar conta.</button>
+
+          <button type="submit" className={styles.submitButton}>Criar conta</button>
+
           <div className={styles.registerRedirect}>
-          <p>Já possui conta? <Link to="/">Faça login.</Link></p>
-        </div>
+            <p>Já possui conta? <Link to="/">Faça login.</Link></p>
+          </div>
         </form>
       </div>
+
       <div className={styles.registerRight}>
         <div className={styles.rightContent}>
           <div className={styles.navLinks}>

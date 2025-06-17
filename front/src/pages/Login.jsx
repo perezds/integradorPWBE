@@ -14,22 +14,23 @@ export default function Login() {
   const [mostrarSenha, setMostrarSenha] = useState(false);
 
   const handleLogin = async (e) => {
-  e.preventDefault();
-  try {
-    const response = await axios.post("http://localhost:8000/token/", {
-      username,
-      password,
-    });
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:8000/token/", {
+        username: email,
+        password: senha
+      });
 
-    localStorage.setItem("access", response.data.access);
-    localStorage.setItem("refresh", response.data.refresh);
+      localStorage.setItem("access", response.data.access);
+      localStorage.setItem("refresh", response.data.refresh);
 
-    alert("Login realizado com sucesso!");
-    window.location.href = "/dashboard";
-  } catch (err) {
-    alert("Usuário ou senha inválidos.");
-  }
-};
+      alert("Login realizado com sucesso!");
+      window.location.href = "/dashboard";
+
+    } catch {
+      alert("Usuário ou senha inválidos.");
+    }
+  };
 
   const handleRegister = () => {
     navigate('/cadastro');
@@ -45,52 +46,56 @@ export default function Login() {
         <h2>Login</h2>
         <p className={styles.subtitle}>Bem-vindo(a) de volta!</p>
 
-        <div className={styles.inputBox}>
-          <label>Email institucional:</label>
-          <div className={styles.inputWrapper}>
-            <FaEnvelope className={styles.icon} />
-            <input
-              type="user"
-              placeholder="lin"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+        <form onSubmit={handleLogin}>
+          <div className={styles.inputBox}>
+            <label>Email institucional:</label>
+            <div className={styles.inputWrapper}>
+              <FaEnvelope className={styles.icon} />
+              <input
+                type="text"
+                placeholder="lin"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
           </div>
-        </div>
 
-        <div className={styles.inputBox}>
-          <label>Senha:</label>
-          <div className={styles.inputWrapper}>
-            <FaLock className={styles.icon} />
-            <input
-              type={mostrarSenha ? 'text' : 'password'}
-              placeholder="•••"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-            />
-            <FiEye
-              className={`${styles.icon} ${styles.eye}`}
-              onClick={toggleSenha}
-              title="Mostrar/ocultar senha"
-              style={{ cursor: 'pointer' }}
-            />
+          <div className={styles.inputBox}>
+            <label>Senha:</label>
+            <div className={styles.inputWrapper}>
+              <FaLock className={styles.icon} />
+              <input
+                type={mostrarSenha ? 'text' : 'password'}
+                placeholder="•••"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+                required
+              />
+              <FiEye
+                className={`${styles.icon} ${styles.eye}`}
+                onClick={toggleSenha}
+                title="Mostrar/ocultar senha"
+                style={{ cursor: 'pointer' }}
+              />
+            </div>
           </div>
-        </div>
 
-        <div className={styles.remember}>
-          <label>
-            <input type="checkbox" /> Lembrar de mim.
-          </label>
-        </div>
+          <div className={styles.remember}>
+            <label>
+              <input type="checkbox" /> Lembrar de mim.
+            </label>
+          </div>
 
-        <div className={styles.buttonGroup}>
-          <button className={styles.loginBtn} onClick={handleLogin}>
-            Login
-          </button>
-          <button className={styles.registerBtn} onClick={handleRegister}>
-            Cadastro
-          </button>
-        </div>
+          <div className={styles.buttonGroup}>
+            <button type="submit" className={styles.loginBtn}>
+              Login
+            </button>
+            <button type="button" className={styles.registerBtn} onClick={handleRegister}>
+              Cadastro
+            </button>
+          </div>
+        </form>
 
         <div className={styles.signupSuggestion}>
           <span>Não tem uma conta?</span>
@@ -102,10 +107,6 @@ export default function Login() {
 
       <div className={styles.loginRight}>
         <div className={styles.rightContent}>
-          <div className={styles.navLinks}>
-            <Link to="/home">Página inicial</Link>
-            <Link to="/settings/sensores">Sensores</Link>
-          </div>
           <img src={headerImage} alt="Ideia brilhante" />
         </div>
       </div>

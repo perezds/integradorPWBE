@@ -36,14 +36,12 @@ const Cadastro = () => {
     }
 
     try {
-      // 1. Cadastro
       await axios.post('http://localhost:8000/api/cadastro/', {
         username,
         email,
         password,
       });
 
-      // 2. Login automático
       const res = await axios.post("http://localhost:8000/token/", {
         username,
         password,
@@ -72,6 +70,7 @@ const Cadastro = () => {
         <p className={styles.subtitle}>Preencha os campos abaixo para continuar.</p>
 
         <form onSubmit={handleSubmit}>
+   
           <div className={styles.inputBox}>
             <label htmlFor="username">Usuário</label>
             <div className={styles.inputWrapper}>
@@ -82,11 +81,13 @@ const Cadastro = () => {
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
+                placeholder="Digite seu usuário"
                 required
               />
             </div>
           </div>
 
+   
           <div className={styles.inputBox}>
             <label htmlFor="email">Email</label>
             <div className={styles.inputWrapper}>
@@ -97,11 +98,13 @@ const Cadastro = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
+                placeholder="Digite seu e-mail"
                 required
               />
             </div>
           </div>
 
+          
           <div className={styles.inputBox}>
             <label htmlFor="password">Senha</label>
             <div className={styles.inputWrapper}>
@@ -112,6 +115,7 @@ const Cadastro = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
+                placeholder="Digite sua senha"
                 required
               />
               <span className={styles.eye} onClick={togglePassword}>
@@ -120,6 +124,7 @@ const Cadastro = () => {
             </div>
           </div>
 
+ 
           <div className={styles.inputBox}>
             <label htmlFor="confirmPassword">Confirmar Senha</label>
             <div className={styles.inputWrapper}>
@@ -130,6 +135,7 @@ const Cadastro = () => {
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
+                placeholder="Confirme sua senha"
                 required
               />
               <span className={styles.eye} onClick={toggleConfirmPassword}>
@@ -138,20 +144,19 @@ const Cadastro = () => {
             </div>
           </div>
 
+       
           <button type="submit" className={styles.submitButton}>Criar conta</button>
 
+          
           <div className={styles.registerRedirect}>
             <p>Já possui conta? <Link to="/">Faça login.</Link></p>
           </div>
         </form>
       </div>
 
+ 
       <div className={styles.registerRight}>
         <div className={styles.rightContent}>
-          <div className={styles.navLinks}>
-            <Link to="/home">Página inicial</Link>
-            <Link to="/sensores">Sensores</Link>
-          </div>
           <img src={headerImage} alt="Ideia brilhante" />
         </div>
       </div>

@@ -5,20 +5,20 @@ import Header from './HeaderHome';
 
 const faqs = [
   {
-    pergunta: "Como visualizar os sensores no mapa?",
-    resposta: "Vá até o menu 'Sensores', clique no botão 'Visualizar no mapa' e pronto! O mapa irá destacar os sensores ativos."
+    pergunta: "Como ver as notificações?",
+    resposta: "Clique no ícone de sino no canto superior direito do dashboard. Lá você verá alertas, avisos e eventos recentes em tempo real."
   },
   {
-    pergunta: "O que significam as cores dos status?",
-    resposta: "Verde: Normal / Amarelo: Atenção / Vermelho: Alerta crítico. Essas cores aparecem nos indicadores do sensor."
+    pergunta: "Como visualizar os sensores?",
+    resposta: "Acesse o menu lateral 'Sensores' e clique na opção 'Visualizar no Mapa'. Você verá os sensores ativos distribuídos pela planta da cidade inteligente."
   },
   {
-    pergunta: "Como exportar relatórios?",
-    resposta: "Clique em 'Relatórios', selecione o tipo e o período, depois clique em 'Exportar' no canto superior direito."
+    pergunta: "Como alterar o nome de perfil?",
+    resposta: "Vá até 'Configurações' > 'Perfil', clique em 'Editar', atualize seu nome e salve as alterações no botão correspondente."
   },
   {
-    pergunta: "Como alterar limiares de alerta?",
-    resposta: "Entre no painel de configuração de sensores, selecione o sensor e edite os valores de alerta no campo correspondente."
+    pergunta: "Aonde está disponível o relatório?",
+    resposta: "Os relatórios estão na seção 'Relatórios' do menu lateral. Você pode filtrar por tipo, data e exportar em PDF ou CSV."
   }
 ];
 

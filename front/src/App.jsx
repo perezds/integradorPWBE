@@ -15,6 +15,8 @@ import Sensores from './components/Sensores';
 import MapaPage from './components/MapaPage';
 import Ajuda from './components/Ajuda';
 import ModalSensores from './components/ModalSensores';
+import ExportButton from './components/ExportButton';
+
 
 function App() {
   const location = useLocation();
@@ -34,10 +36,13 @@ function App() {
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/mensagens" element={<MensagensPage />} />
         <Route path="/mapa" element={<MapaPage />} />
+
+
       </Routes>
 
       {}
       <ModalSensores />
+       <ExportButton />
 
      
       {shouldShowFooter && <Footer />}

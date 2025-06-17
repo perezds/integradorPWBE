@@ -1,0 +1,21 @@
+.exportButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background-color: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.exportButton:hover {
+  background-color: #1d4ed8;
+}
+
+.icon {
+  font-size: 1.2rem;
+}

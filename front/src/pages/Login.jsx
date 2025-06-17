@@ -9,35 +9,42 @@ import headerImage from '../../images/header_image.svg';
 export default function Login() {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [senha, setSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await axios.post("http://localhost:8000/token/", {
-        username: email,
+      const response = await axios.post("http://localhost:8000/api/token/", {
+        username: username,
         password: senha
       });
 
-      localStorage.setItem("access", response.data.access);
-      localStorage.setItem("refresh", response.data.refresh);
+      const { access, refresh } = response.data;
+
+      localStorage.setItem("access", access);
+      localStorage.setItem("refresh", refresh);
+
+      console.log("Access Token:", access);
+      console.log("Refresh Token:", refresh);
 
       alert("Login realizado com sucesso!");
-      window.location.href = "/dashboard";
+      window.location.href = "/home";
 
-    } catch {
+    } catch (error) {
       alert("Usuário ou senha inválidos.");
+      console.error("Erro no login:", error);
     }
-  };
-
-  const handleRegister = () => {
-    navigate('/cadastro');
   };
 
   const toggleSenha = () => {
     setMostrarSenha(!mostrarSenha);
+  };
+
+  const handleRegister = () => {
+    navigate('/cadastro');
   };
 
   return (
@@ -48,14 +55,14 @@ export default function Login() {
 
         <form onSubmit={handleLogin}>
           <div className={styles.inputBox}>
-            <label>Email institucional:</label>
+            <label>Usuário:</label>
             <div className={styles.inputWrapper}>
               <FaEnvelope className={styles.icon} />
               <input
                 type="text"
-                placeholder="lin"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Digite seu usuário"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>

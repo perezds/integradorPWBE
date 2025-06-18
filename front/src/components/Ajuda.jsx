@@ -6,11 +6,11 @@ import Header from './HeaderHome';
 const faqs = [
   {
     pergunta: "Como ver as notificações?",
-    resposta: "Clique no ícone de sino no canto superior direito do dashboard. Lá você verá alertas, avisos e eventos recentes em tempo real."
+    resposta: "Acesse o menu lateral  'Notificações' no canto esquerdo da página"
   },
   {
     pergunta: "Como visualizar os sensores?",
-    resposta: "Acesse o menu lateral 'Sensores' e clique na opção 'Visualizar no Mapa'. Você verá os sensores ativos distribuídos pela planta da cidade inteligente."
+    resposta: "Acesse o menu lateral 'Configurações' e clique em 'Sensores'"
   },
   {
     pergunta: "Como alterar o nome de perfil?",

@@ -42,7 +42,7 @@ function App() {
 
       {}
       <ModalSensores />
-       <ExportButton />
+
 
      
       {shouldShowFooter && <Footer />}

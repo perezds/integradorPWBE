@@ -1,187 +1,108 @@
-import os
-import zipfile
 from django.http import HttpResponse
-from django.conf import settings
-from django.core.files.storage import default_storage
 from rest_framework import viewsets, status
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
+from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
+import pandas as pd
 
-import pandas as pd  # <---- aqui está o pandas
-from openpyxl import Workbook
-from openpyxl.styles import Font, Alignment
-
-from core.models import Sensor, Ambiente, Historico
-from core.serializers import SensorSerializer, AmbienteSerializer, HistoricoSerializer
-from core.filters import HistoricoFilter
+from .models import Sensor, Ambiente, Historico
+from .serializers import SensorSerializer, AmbienteSerializer, HistoricoSerializer
 
 
-# --------- EXPORTAR HISTÓRICO USANDO PANDAS -----------
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def exportar_historico_xlsx(request):
-    historicos = Historico.objects.all().values('id', 'sensor__tipo', 'ambiente__sig', 'valor', 'timestamp')
-
-    # Cria DataFrame direto, pandas manja do join via __ (duplo underline)
-    df = pd.DataFrame(historicos)
-    df.rename(columns={
-        'id': 'ID',
-        'sensor__tipo': 'Sensor',
-        'ambiente__sig': 'Ambiente',
-        'valor': 'Valor',
-        'timestamp': 'Timestamp'
-    }, inplace=True)
-
-    response = HttpResponse(
-        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    )
-    response['Content-Disposition'] = 'attachment; filename="historico.xlsx"'
-
-    with pd.ExcelWriter(response, engine='openpyxl') as writer:
-        df.to_excel(writer, index=False, sheet_name='Histórico')
-
-    return response
+class SensorViewSet(viewsets.ModelViewSet):
+    queryset = Sensor.objects.all()
+    serializer_class = SensorSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    search_fields = ['tipo', 'mac_address', 'status']
 
 
-# --------- EXPORTAR SENSORES USANDO PANDAS -----------
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def exportar_sensores_xlsx(request):
-    sensores = Sensor.objects.all().values('id', 'tipo', 'mac_address', 'latitude', 'longitude', 'status')
-
-    df = pd.DataFrame(sensores)
-    df['status'] = df['status'].apply(lambda x: 'Ativo' if x else 'Inativo')
-    df.rename(columns={
-        'id': 'ID',
-        'tipo': 'Tipo',
-        'mac_address': 'MAC Address',
-        'latitude': 'Latitude',
-        'longitude': 'Longitude',
-        'status': 'Status'
-    }, inplace=True)
-
-    response = HttpResponse(
-        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    )
-    response['Content-Disposition'] = 'attachment; filename="sensores.xlsx"'
-
-    with pd.ExcelWriter(response, engine='openpyxl') as writer:
-        df.to_excel(writer, index=False, sheet_name='Sensores')
-
-    return response
+class AmbienteViewSet(viewsets.ModelViewSet):
+    queryset = Ambiente.objects.all()
+    serializer_class = AmbienteSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    search_fields = ['sig', 'descricao', 'responsavel']
 
 
-# --------- EXPORTAR AMBIENTES USANDO PANDAS -----------
+class HistoricoViewSet(viewsets.ModelViewSet):
+    queryset = Historico.objects.all()
+    serializer_class = HistoricoSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    search_fields = ['sensor__mac_address', 'ambiente__sig', 'valor', 'timestamp']
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def exportar_ambientes_xlsx(request):
-    ambientes = Ambiente.objects.all().values('id', 'sig', 'descricao', 'ni', 'responsavel')
-
-    df = pd.DataFrame(ambientes)
-    df.rename(columns={
-        'id': 'ID',
-        'sig': 'SIG',
-        'descricao': 'Descrição',
-        'ni': 'NI',
-        'responsavel': 'Responsável'
-    }, inplace=True)
-
-    response = HttpResponse(
-        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    )
-    response['Content-Disposition'] = 'attachment; filename="ambientes.xlsx"'
-
-    with pd.ExcelWriter(response, engine='openpyxl') as writer:
-        df.to_excel(writer, index=False, sheet_name='Ambientes')
-
-    return response
-
-
-# --------- IMPORTAR DADOS DE ZIP COM PLANILHAS XLSX USANDO PANDAS -----------
 
 @api_view(['POST'])
-@permission_classes([IsAdminUser])
-def importar_dados_zip(request):
-    zip_file = request.FILES.get('dados_integrador.zip')
+@permission_classes([AllowAny])
+def cadastrar_usuario(request):
+    username = request.data.get('username')
+    email = request.data.get('email')
+    password = request.data.get('password')
 
-    if not zip_file:
-        return Response({'erro': 'Nenhum arquivo enviado!'}, status=400)
+    if not username or not email or not password:
+        return Response({'erro': 'Preencha todos os campos.'}, status=400)
 
-    path = default_storage.save('temp/dados_integrador.zip', zip_file)
-    full_path = os.path.join(settings.MEDIA_ROOT, path)
+    if User.objects.filter(username=username).exists():
+        return Response({'erro': 'Nome de usuário já existe.'}, status=400)
 
-    try:
-        with zipfile.ZipFile(full_path, 'r') as zip_ref:
-            zip_ref.extractall(os.path.join(settings.MEDIA_ROOT, 'temp/extraido'))
+    user = User.objects.create_user(username=username, email=email, password=password)
+    refresh = RefreshToken.for_user(user)
 
-        pasta_extraida = os.path.join(settings.MEDIA_ROOT, 'temp/extraido')
+    return Response({
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    })
 
-        erros_gerais = []
 
-        for nome_arquivo in os.listdir(pasta_extraida):
-            if nome_arquivo.endswith('.xlsx'):
-                caminho_xlsx = os.path.join(pasta_extraida, nome_arquivo)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def exportar_excel(request):
+    sensores = Sensor.objects.all().values()
+    df = pd.DataFrame(sensores)
 
-                # Abre o Excel com pandas, sem stress com encoding ou csv
-                df = pd.read_excel(caminho_xlsx)
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="sensores.xlsx"'
+    df.to_excel(response, index=False)
+    return response
 
-                # SENSOR
-                if 'sensor' in nome_arquivo.lower():
-                    for _, row in df.iterrows():
-                        try:
-                            tipo = str(row['Tipo']).strip()
-                            mac = str(row['MAC Address']).strip()
-                            lat = float(row['Latitude'])
-                            lon = float(row['Longitude'])
-                            status = str(row['Status']).strip().lower() == 'ativo'
 
-                            if not Sensor.objects.filter(mac_address=mac).exists():
-                                Sensor.objects.create(
-                                    tipo=tipo,
-                                    mac_address=mac,
-                                    latitude=lat,
-                                    longitude=lon,
-                                    status=status
-                                )
-                        except Exception as e:
-                            erros_gerais.append(f"[Sensor] Erro na linha {_ + 2} do arquivo {nome_arquivo}: {e}")
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def exportar_ambientes_csv(request):
+    ambientes = Ambiente.objects.all().values()
+    df = pd.DataFrame(ambientes)
 
-                # AMBIENTE
-                elif 'ambiente' in nome_arquivo.lower():
-                    for _, row in df.iterrows():
-                        try:
-                            Ambiente.objects.create(
-                                sig=row['SIG'],
-                                descricao=row['Descrição'],
-                                ni=row['NI'],
-                                responsavel=row['Responsável']
-                            )
-                        except Exception as e:
-                            erros_gerais.append(f"[Ambiente] Erro na linha {_ + 2} do arquivo {nome_arquivo}: {e}")
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="ambientes.csv"'
+    df.to_csv(response, index=False)
+    return response
 
-                # HISTORICO
-                elif 'historico' in nome_arquivo.lower():
-                    for _, row in df.iterrows():
-                        try:
-                            Historico.objects.create(
-                                sensor_id=row['Sensor'],
-                                ambiente_id=row['Ambiente'],
-                                valor=row['Valor'],
-                                timestamp=row['Timestamp']
-                            )
-                        except Exception as e:
-                            erros_gerais.append(f"[Historico] Erro na linha {_ + 2} do arquivo {nome_arquivo}: {e}")
 
-        if erros_gerais:
-            return Response({'mensagem': 'Importado com alguns erros ⚠️', 'erros': erros_gerais}, status=207)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def exportar_historico_csv(request):
+    historico = Historico.objects.all().values()
+    df = pd.DataFrame(historico)
 
-        return Response({'mensagem': 'Importação concluída com sucesso! 🎉'})
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="historico.csv"'
+    df.to_csv(response, index=False)
+    return response
 
-    except Exception as e:
-        return Response({'erro': str(e)}, status=500)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def status_geral(request):
+    total = Sensor.objects.count()
+    ativos = Sensor.objects.filter(status=True).count()
+    inativos = Sensor.objects.filter(status=False).count()
+    return Response({
+        'total': total,
+        'ativos': ativos,
+        'inativos': inativos
+    })

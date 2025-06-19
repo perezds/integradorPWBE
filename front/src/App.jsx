@@ -1,11 +1,10 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 
-// Páginas
+
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import Home from './pages/Home';
 
-// Componentes
 import SettingsPage from './components/SettingsPage';
 import MenuPage from './components/MenuPage';
 import MensagensPage from './components/MensagensPage';
@@ -18,9 +17,15 @@ import ModalSensores from './components/ModalSensores';
 import ExportButton from './components/ExportButton';
 
 
+import Ambientes from './components/Ambientes';
+import Historico from './components/Historicos';
+
 function App() {
   const location = useLocation();
+
+
   const hideFooterRoutes = ['/', '/cadastro'];
+
   const shouldShowFooter = !hideFooterRoutes.includes(location.pathname);
 
   return (
@@ -33,18 +38,17 @@ function App() {
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/settings/sensores" element={<Sensores />} />
         <Route path="/settings/perfil" element={<ProfilePage />} />
+
+        <Route path="/settings/ambientes" element={<Ambientes />} />
+        <Route path="/settings/historico" element={<Historico />} />
+
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/mensagens" element={<MensagensPage />} />
         <Route path="/mapa" element={<MapaPage />} />
-
-
       </Routes>
 
-      {}
       <ModalSensores />
 
-
-     
       {shouldShowFooter && <Footer />}
     </>
   );

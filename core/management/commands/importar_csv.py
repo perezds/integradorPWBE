@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 import csv
 
 class Command(BaseCommand):
-    help = '📥 Importa dados de sensores a partir de um arquivo CSV'
+    help = ' Importa dados de sensores a partir de um arquivo CSV'
 
     def add_arguments(self, parser):
         parser.add_argument('arquivo', type=str, help='📄 Caminho do arquivo CSV')

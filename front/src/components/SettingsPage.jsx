@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import styles from "./SettingsPage.module.css";
 import Header from "./HeaderHome";
 import Sidebar from "./Sidebar";
-import { Settings, User, Rss } from "lucide-react";
+import { Settings, User, Rss, Home, Clock } from "lucide-react"; // novos ícones incluídos
 
 const menuItems = [
- {
+  {
     title: "Perfil",
     icon: <User className={styles.icone} />,
     desc: "Informações da sua conta e usuário",
@@ -17,6 +17,18 @@ const menuItems = [
     icon: <Rss className={styles.icone} />,
     desc: "Gerencie sensores, alertas e rede",
     link: "/settings/sensores",
+  },
+  {
+    title: "Ambientes",
+    icon: <Home className={styles.icone} />,
+    desc: "Configure os espaços e locais monitorados",
+    link: "/settings/ambientes",
+  },
+  {
+    title: "Histórico",
+    icon: <Clock className={styles.icone} />,
+    desc: "Visualize os dados registrados ao longo do tempo",
+    link: "/settings/historico",
   },
 ];
 

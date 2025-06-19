@@ -4,28 +4,29 @@ import styles from './ExportButton.module.css';
 import { FaDownload } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
-export default function ExportButton() {
+export default function ExportButton({ endpoint = '/api/exportar/', filename = 'dados.csv' }) {
   const handleExport = async () => {
     try {
       const token = localStorage.getItem('access');
-      const response = await axios.get('/api/exportar/', {
-       headers: {
+      const response = await axios.get(endpoint, {
+        headers: {
           Authorization: `Bearer ${token}`,
         },
+        responseType: 'blob',
       });
 
-      const blob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
+      const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'sensores.csv');
+      link.setAttribute('download', filename);
       document.body.appendChild(link);
       link.click();
       link.remove();
 
-      toast.success('📥 CSV exportado com sucesso!');
+      toast.success('📥 Arquivo exportado com sucesso!');
     } catch (error) {
-      toast.error('❌ Erro ao exportar o CSV.');
+      toast.error('❌ Erro ao exportar o arquivo.');
       console.error(error);
     }
   };
@@ -33,7 +34,7 @@ export default function ExportButton() {
   return (
     <button className={styles.exportButton} onClick={handleExport}>
       <FaDownload className={styles.icon} />
-      Exportar CSV
+      Exportar
     </button>
   );
 }

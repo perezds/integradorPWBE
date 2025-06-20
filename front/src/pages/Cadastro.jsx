@@ -19,44 +19,36 @@ const Cadastro = () => {
 
   const navigate = useNavigate();
 
-  // Toggle visualização das senhas com ícones intuitivos
   const togglePassword = () => setShowPassword(!showPassword);
   const toggleConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
-  // Atualiza o state dinamicamente conforme o usuário digita
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Função mestre que comanda o cadastro + login
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const { username, email, password, confirmPassword } = formData;
 
-    // Validação imediata: as senhas precisam casar como versos na poesia do código
     if (password !== confirmPassword) {
       alert("Ops! As senhas não coincidem, dá uma revisada.");
       return;
     }
 
     try {
-      // Primeiro ato: cadastrar usuário
       const cadastroRes = await axios.post('http://localhost:8000/api/cadastro/', {
         username,
         email,
         password,
       });
 
-      // Se o backend respondeu com sucesso (201 criado ou 200 ok), seguimos
       if (cadastroRes.status === 201 || cadastroRes.status === 200) {
-        // Segundo ato: login automático pós-cadastro, experiência smooth
         const loginRes = await axios.post("http://localhost:8000/api/token/", {
           username,
           password,
         });
 
-        // Guarda os tokens que nos permitem conquistar o reino digital
         localStorage.setItem("access", loginRes.data.access);
         localStorage.setItem("refresh", loginRes.data.refresh);
 
@@ -66,9 +58,7 @@ const Cadastro = () => {
         alert("Erro inesperado no cadastro. Tenta de novo, vai?");
         console.error("Resposta inesperada no cadastro:", cadastroRes);
       }
-
     } catch (error) {
-      // Tratamento de erro robusto e empático: entenda o que o servidor diz
       console.error("Erro no cadastro/login:", error);
 
       if (error.response) {
@@ -96,7 +86,6 @@ const Cadastro = () => {
 
         <form onSubmit={handleSubmit}>
 
-          {/* Campo usuário com ícone */}
           <div className={styles.inputBox}>
             <label htmlFor="username">Usuário</label>
             <div className={styles.inputWrapper}>
@@ -114,7 +103,6 @@ const Cadastro = () => {
             </div>
           </div>
 
-          {/* Campo email com validação nativa do HTML5 */}
           <div className={styles.inputBox}>
             <label htmlFor="email">Email</label>
             <div className={styles.inputWrapper}>
@@ -132,7 +120,6 @@ const Cadastro = () => {
             </div>
           </div>
 
-          {/* Campo senha com toggle de visibilidade */}
           <div className={styles.inputBox}>
             <label htmlFor="password">Senha</label>
             <div className={styles.inputWrapper}>
@@ -153,7 +140,6 @@ const Cadastro = () => {
             </div>
           </div>
 
-          {/* Confirmação da senha, pra garantir que ninguém vai se perder no labirinto */}
           <div className={styles.inputBox}>
             <label htmlFor="confirmPassword">Confirmar Senha</label>
             <div className={styles.inputWrapper}>
@@ -174,17 +160,14 @@ const Cadastro = () => {
             </div>
           </div>
 
-          {/* Botão de submissão do formulário */}
           <button type="submit" className={styles.submitButton}>Criar conta</button>
 
-          {/* Link para retornar ao login */}
           <div className={styles.registerRedirect}>
             <p>Já possui conta? <Link to="/">Faça login.</Link></p>
           </div>
         </form>
       </div>
 
-      {/* Lado direito com imagem decorativa */}
       <div className={styles.registerRight}>
         <div className={styles.rightContent}>
           <img src={headerImage} alt="Ideia brilhante" />

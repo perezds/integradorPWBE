@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
 import { FiEye } from 'react-icons/fi';
-import axios from 'axios';
+import api from '../services/axiosInstance'
 import headerImage from '../../images/header_image.svg';
 
 export default function Login() {
@@ -12,30 +12,39 @@ export default function Login() {
   const [username, setUsername] = useState('');
   const [senha, setSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:8000/api/token/", {
-        username: username,
-        password: senha
+      const response = await api.post('/token/', {
+        username,
+        password: senha,
       });
 
       const { access, refresh } = response.data;
 
-      localStorage.setItem("access", access);
-      localStorage.setItem("refresh", refresh);
+      localStorage.setItem('access', access);
+      localStorage.setItem('refresh', refresh);
 
-      console.log("Access Token:", access);
-      console.log("Refresh Token:", refresh);
+      console.log('Access Token:', access);
+      console.log('Refresh Token:', refresh);
 
-      alert("Login realizado com sucesso!");
-      window.location.href = "/home";
+     
+      navigate('/home');
 
     } catch (error) {
-      alert("Usuário ou senha inválidos.");
-      console.error("Erro no login:", error);
+      console.error('Erro no login:', error);
+
+      if (error.response && error.response.status === 401) {
+        alert('Usuário ou senha inválidos.');
+      } else {
+        alert('Erro na comunicação com o servidor. Tente novamente mais tarde.');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,6 +73,7 @@ export default function Login() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
+                disabled={loading}
               />
             </div>
           </div>
@@ -78,6 +88,7 @@ export default function Login() {
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
                 required
+                disabled={loading}
               />
               <FiEye
                 className={`${styles.icon} ${styles.eye}`}
@@ -90,15 +101,20 @@ export default function Login() {
 
           <div className={styles.remember}>
             <label>
-              <input type="checkbox" /> Lembrar de mim.
+              <input type="checkbox" disabled={loading} /> Lembrar de mim.
             </label>
           </div>
 
           <div className={styles.buttonGroup}>
-            <button type="submit" className={styles.loginBtn}>
-              Login
+            <button type="submit" className={styles.loginBtn} disabled={loading}>
+              {loading ? 'Entrando...' : 'Login'}
             </button>
-            <button type="button" className={styles.registerBtn} onClick={handleRegister}>
+            <button
+              type="button"
+              className={styles.registerBtn}
+              onClick={handleRegister}
+              disabled={loading}
+            >
               Cadastro
             </button>
           </div>

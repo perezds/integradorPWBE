@@ -12,6 +12,9 @@ class AmbienteSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class HistoricoSerializer(serializers.ModelSerializer):
-    class Meta: 
+    sensor = SensorSerializer(read_only=True)
+    ambiente = AmbienteSerializer(read_only=True)
+
+    class Meta:
         model = Historico
-        fields = '__all__'
+        fields = ['id', 'timestamp', 'sensor', 'ambiente', 'valor']

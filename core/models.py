@@ -1,38 +1,20 @@
 from django.db import models
 
 class Sensor(models.Model):
-    TIPOS = [
-        ('temperatura', 'Temperatura'),
-        ('umidade', 'Umidade'),
-        ('luminosidade', 'Luminosidade'),
-        ('contador', 'Contador de Pessoas'),
-    ]
-
-    tipo = models.CharField(max_length=20, choices=TIPOS)
-    mac_address = models.CharField(max_length=50, unique=True)
+    tipo = models.CharField(max_length=255)  
+    mac_address = models.CharField(max_length=255)
     latitude = models.FloatField()
     longitude = models.FloatField()
-    status = models.BooleanField(default=True)
-
-    def __str__(self):
-        return f"{self.tipo} - {self.mac_address}"
-
+    status = models.BooleanField()
 
 class Ambiente(models.Model):
-    sig = models.CharField(max_length=10)
-    descricao = models.TextField()
-    ni = models.IntegerField()
-    responsavel = models.CharField(max_length=100)
-
-    def __str__(self):
-        return f"{self.sig} - {self.descricao}"
-
+    sig = models.CharField(max_length=50) 
+    descricao = models.CharField(max_length=255)
+    ni = models.CharField(max_length=255)
+    responsavel = models.CharField(max_length=255)
 
 class Historico(models.Model):
     sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE)
     ambiente = models.ForeignKey(Ambiente, on_delete=models.CASCADE)
-    valor = models.FloatField()
+    valor = models.FloatField(default=0.0)
     timestamp = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.sensor} - {self.timestamp}"

@@ -84,12 +84,12 @@
 }
 
 .statusAtivo {
-  color: #16a34a; /* verde */
+  color: #16a34a; 
   font-weight: 600;
 }
 
 .statusInativo {
-  color: #dc2626; /* vermelho */
+  color: #dc2626; 
   font-weight: 600;
 }
 
@@ -124,4 +124,77 @@
 
 .btnIcon.delete:hover {
   color: #b91c1c;
+}
+.inputFiltro {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  width: 180px;
+  background-color: #fff;
+}
+
+.inputFiltro:focus {
+  border-color: #4e8cff;
+  box-shadow: 0 0 0 3px rgba(78, 140, 255, 0.2);
+}
+
+.btnFiltro {
+  padding: 8px 16px;
+  background-color: #4e8cff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btnFiltro:hover {
+  background-color: #376dcc;
+  transform: scale(1.03);
+}
+
+.btnFiltro:active {
+  background-color: #2e5ab8;
+  transform: scale(0.98);
+}
+
+
+.filtroContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  background-color: #f1f5f9;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filtroInput {
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: white;
+  flex: 1;
+  min-width: 120px;
+}
+
+.filtroBtn {
+  padding: 8px 16px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.filtroBtn:hover {
+  background-color: #2563eb;
 }

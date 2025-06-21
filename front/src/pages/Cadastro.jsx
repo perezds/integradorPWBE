@@ -16,7 +16,6 @@ const Cadastro = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const navigate = useNavigate();
 
   const togglePassword = () => setShowPassword(!showPassword);
@@ -28,11 +27,10 @@ const Cadastro = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const { username, email, password, confirmPassword } = formData;
 
     if (password !== confirmPassword) {
-      alert("Ops! As senhas não coincidem, dá uma revisada.");
+      alert("As senhas não coincidem.");
       return;
     }
 
@@ -52,28 +50,31 @@ const Cadastro = () => {
         localStorage.setItem("access", loginRes.data.access);
         localStorage.setItem("refresh", loginRes.data.refresh);
 
-        alert("Cadastro e login realizados com sucesso! Bem-vindo(a) ao dashboard.");
+        alert("Cadastro e login realizados com sucesso!");
         navigate("/home");
       } else {
-        alert("Erro inesperado no cadastro. Tenta de novo, vai?");
+        alert("Erro inesperado no cadastro.");
         console.error("Resposta inesperada no cadastro:", cadastroRes);
       }
+
     } catch (error) {
       console.error("Erro no cadastro/login:", error);
 
       if (error.response) {
+        console.log("Erro detalhado do servidor:", error.response.data);
+
         switch (error.response.status) {
           case 409:
-            alert("Ops, esse usuário ou email já estão em uso.");
+            alert("Usuário ou email já existem.");
             break;
           case 400:
-            alert("Parece que algum dado está inválido. Confere aí.");
+            alert("Dados inválidos. Confira os campos.");
             break;
           default:
-            alert(`Erro inesperado: código ${error.response.status}.`);
+            alert(`Erro inesperado: código ${error.response.status}`);
         }
       } else {
-        alert("Erro de conexão. Verifica sua internet ou o servidor.");
+        alert("Erro de conexão com o servidor.");
       }
     }
   };
@@ -85,7 +86,6 @@ const Cadastro = () => {
         <p className={styles.subtitle}>Preencha os campos abaixo para continuar.</p>
 
         <form onSubmit={handleSubmit}>
-
           <div className={styles.inputBox}>
             <label htmlFor="username">Usuário</label>
             <div className={styles.inputWrapper}>
@@ -134,7 +134,7 @@ const Cadastro = () => {
                 required
                 autoComplete="new-password"
               />
-              <span className={styles.eye} onClick={togglePassword} title={showPassword ? "Ocultar senha" : "Mostrar senha"}>
+              <span className={styles.eye} onClick={togglePassword}>
                 {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
               </span>
             </div>
@@ -154,7 +154,7 @@ const Cadastro = () => {
                 required
                 autoComplete="new-password"
               />
-              <span className={styles.eye} onClick={toggleConfirmPassword} title={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}>
+              <span className={styles.eye} onClick={toggleConfirmPassword}>
                 {showConfirmPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
               </span>
             </div>
@@ -170,7 +170,7 @@ const Cadastro = () => {
 
       <div className={styles.registerRight}>
         <div className={styles.rightContent}>
-          <img src={headerImage} alt="Ideia brilhante" />
+          <img src={headerImage} alt="Ilustração de cadastro" />
         </div>
       </div>
     </div>

@@ -13,11 +13,7 @@ const Sidebar = () => {
         <ul>
           <li><a href="/home" className={styles.active}><FaTachometerAlt /> <span>Dashboard</span></a></li>
           <li><a href="/mapa"><FaMapMarkedAlt /> <span>Mapas</span></a></li>
-          <li><a href="/menu"><FaBars /> <span>Menu</span></a></li>
-          <li><a href="/mensagens"><FaEnvelope /> <span>Notificações</span></a></li>
-        </ul>
-        <p className={styles.section}>O U T R O S</p>
-        <ul>
+          <li><a href="/mensagens"><FaEnvelope /> <span>Notificações</span></a></li>       
           <li><a href="/settings"><FaCogs /> <span>Configurações</span></a></li>
           <li><a href="/ajuda"><FaQuestionCircle /> <span>Ajuda</span></a></li>
         </ul>

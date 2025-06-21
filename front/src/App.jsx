@@ -5,7 +5,6 @@ import Cadastro from './pages/Cadastro';
 import Home from './pages/Home';
 
 import SettingsPage from './components/SettingsPage';
-import MenuPage from './components/MenuPage';
 import MensagensPage from './components/MensagensPage';
 import ProfilePage from './components/Profile';
 import Footer from './components/Footer';
@@ -44,8 +43,7 @@ function App() {
         <Route path="/settings/perfil" element={<ProfilePage />} />
         <Route path="/settings/ambientes" element={<Ambientes />} />
         <Route path="/settings/historico" element={<Historico />} />
-        <Route path="/menu" element={<MenuPage />} />
-        <Route path="/mensagens" element={<MensagensPage />} />
+           <Route path="/mensagens" element={<MensagensPage />} />
         <Route path="/mapa" element={<MapaPage />} />
       </Routes>
 

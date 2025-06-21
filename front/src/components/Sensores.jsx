@@ -52,7 +52,7 @@ const Sensores = () => {
     let filtrados = [...todosSensores];
 
     if (filtros.tipo) {
-      filtrados = filtrados.filter(s => s.tipo.toLowerCase().includes(filtros.tipo.toLowerCase()));
+      filtrados = filtrados.filter(s => s.tipo.toLowerCase() === filtros.tipo.toLowerCase());
     }
 
     if (filtros.status) {
@@ -169,14 +169,20 @@ const Sensores = () => {
               onChange={handleFiltroChange}
               className={styles.filtroInput}
             />
-            <input
-              type="text"
+
+            <select
               name="tipo"
-              placeholder="Filtrar por Tipo"
               value={filtros.tipo}
               onChange={handleFiltroChange}
               className={styles.filtroInput}
-            />
+            >
+              <option value="">Todos os Tipos</option>
+              <option value="Temperatura">Temperatura</option>
+              <option value="Umidade">Umidade</option>
+              <option value="Luminosidade">Luminosidade</option>
+              <option value="Contador de Pessoas">Contador de Pessoas</option>
+            </select>
+
             <select
               name="status"
               value={filtros.status}
@@ -187,6 +193,7 @@ const Sensores = () => {
               <option value="ativo">Ativo</option>
               <option value="inativo">Inativo</option>
             </select>
+
             <button onClick={aplicarFiltros} className={styles.filtroBtn}>
               Aplicar Filtros
             </button>

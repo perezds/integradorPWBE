@@ -14,7 +14,7 @@ class Ambiente(models.Model):
     responsavel = models.CharField(max_length=255)
 
 class Historico(models.Model):
-    sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE)
+    valor = models.CharField(default=0.0)
+    timestamp = models.DateTimeField()
     ambiente = models.ForeignKey(Ambiente, on_delete=models.CASCADE)
-    valor = models.FloatField(default=0.0)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE)
